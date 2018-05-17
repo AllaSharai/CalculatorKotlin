@@ -10,6 +10,8 @@ import java.util.*
 
 class Controller : Initializable {
 
+    var dotAllowed : Boolean = true
+
     @FXML
     var expressionText : TextField = TextField()
 
@@ -20,8 +22,24 @@ class Controller : Initializable {
     @FXML
     fun digitPressed(event: ActionEvent) {
 
-        var button : Button = event.source as Button
+        val button : Button = event.source as Button
         expressionText.text = expressionText.text + button.text
+    }
+
+    @FXML
+    fun dotPressed() {
+        val lastSymbol : Char = getLastSymbol()
+        if (Character.isDigit(lastSymbol) && dotAllowed) {
+            expressionText.text = expressionText.text + '.'
+            //TODO: allow dot after symbols + - / * ( or )
+            dotAllowed = false
+        }
+
+
+    }
+
+    fun getLastSymbol() : Char {
+        return expressionText.text[expressionText.text.length - 1]
     }
 
 }
