@@ -5,6 +5,7 @@ import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.Button
 import javafx.scene.control.TextField
+import logic.Calculator
 import java.net.URL
 import java.util.*
 
@@ -91,6 +92,11 @@ class Controller : Initializable {
         }
     }
 
+    @FXML
+    fun equalsPressed() {
+        expressionText.text = Calculator.calculate(expression = expressionText.text).toString()
+        dotAllowed = true
+    }
 
     private fun getLastSymbol(): Char {
 

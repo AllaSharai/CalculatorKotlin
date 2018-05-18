@@ -134,7 +134,7 @@
             </font>
         </Button>
         <Button mnemonicParsing="false" prefHeight="1000.0" prefWidth="1000.0" text="=" GridPane.columnIndex="2"
-                GridPane.rowIndex="4">
+                GridPane.rowIndex="4" onAction="#equalsPressed">
             <font>
                 <Font size="35.0"/>
             </font>
