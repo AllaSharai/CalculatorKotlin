@@ -12,6 +12,8 @@ class Controller : Initializable {
 
     var dotAllowed: Boolean = true
 
+    val operators = listOf('+', '-', '*', '/')
+
     @FXML
     var expressionText: TextField = TextField()
 
@@ -33,7 +35,6 @@ class Controller : Initializable {
         val lastSymbol: Char = getLastSymbol()
         if (Character.isDigit(lastSymbol) && dotAllowed) {
             expressionText.text = expressionText.text + '.'
-            //TODO: allow dot after symbols + - / * ( or )
             dotAllowed = false
         }
     }
@@ -52,22 +53,47 @@ class Controller : Initializable {
     }
 
     @FXML
-    //FIXME
     fun openParenthesisPressed() {
-        if (expressionText.text == "0") {
-            expressionText.clear()
+
+        if (!operators.contains(getLastSymbol())) {
+            if (expressionText.text == "0") {
+                expressionText.clear()
+                expressionText.text = expressionText.text + '('
+            }
+            return
         }
 
         expressionText.text = expressionText.text + '('
     }
 
     @FXML
-    //FIXME
     fun closeParenthesisPressed() {
-        expressionText.text = expressionText.text + ')'
+        val lastSymbol: Char = getLastSymbol()
+        if (Character.isDigit(lastSymbol)) {
+            expressionText.text = expressionText.text + ')'
+        }
     }
 
+    @FXML
+    fun operatorPressed(event: ActionEvent) {
+        val button: Button = event.source as Button
+        val lastSymbol: Char = getLastSymbol()
+
+        if (Character.isDigit(lastSymbol) || lastSymbol == ')') {
+            expressionText.text = expressionText.text + button.text
+            dotAllowed = true
+            return
+        }
+
+        if (button.text == "-" && lastSymbol == '('){
+            expressionText.text = expressionText.text + button.text
+            dotAllowed = true
+        }
+    }
+
+
     private fun getLastSymbol(): Char {
+
         return expressionText.text[expressionText.text.length - 1]
     }
 
