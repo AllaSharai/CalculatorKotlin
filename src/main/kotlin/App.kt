@@ -7,7 +7,7 @@ import javafx.stage.Stage
 class App : Application() {
 
     override fun start(stage: Stage?) {
-        val root : Parent? = FXMLLoader.load(App.javaClass.getResource("/Main.fxml"))
+        val root: Parent? = FXMLLoader.load(App.javaClass.getResource("/Main.fxml"))
 
         stage?.title = "Hello world!"
         stage?.scene = Scene(root)
@@ -16,7 +16,7 @@ class App : Application() {
 
     companion object {
         @JvmStatic
-        fun main(args : Array<String>) {
+        fun main(args: Array<String>) {
             launch(App::class.java)
         }
     }

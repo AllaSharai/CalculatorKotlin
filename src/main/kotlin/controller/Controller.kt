@@ -7,7 +7,7 @@ import javafx.scene.control.Button
 import javafx.scene.control.TextField
 import logic.Calculator
 import java.net.URL
-import java.util.*
+import java.util.ResourceBundle
 
 class Controller : Initializable {
 
@@ -86,7 +86,7 @@ class Controller : Initializable {
             return
         }
 
-        if (button.text == "-" && lastSymbol == '('){
+        if (button.text == "-" && lastSymbol == '(') {
             expressionText.text = expressionText.text + button.text
             dotAllowed = true
         }
@@ -94,7 +94,11 @@ class Controller : Initializable {
 
     @FXML
     fun equalsPressed() {
-        expressionText.text = Calculator.calculate(expression = expressionText.text).toString()
+        var result = Calculator.calculate(expression = expressionText.text).toString()
+        if (result.endsWith(".0")) {
+            result = result.dropLast(2)
+        }
+        expressionText.text = result
         dotAllowed = true
     }
 

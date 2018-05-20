@@ -1,6 +1,7 @@
 package logic
 
-import java.util.*
+import java.util.Stack
+
 
 class Calculator {
 
@@ -19,15 +20,14 @@ class Calculator {
             var number = String()
             for (symbol in expression) {
 
-                if (symbol.isDigit() || symbol == '.') {
-                    number = number.plus(symbol)
-
+                number = if (symbol.isDigit() || symbol == '.') {
+                    number.plus(symbol)
                 } else {
                     if (!number.isEmpty()) {
                         numbersStack.push(number.toDouble())
                     }
                     operator(symbol)
-                    number = String()
+                    String()
                 }
 
             }
@@ -37,13 +37,22 @@ class Calculator {
             println(numbersStack)
             println(operatorsStack)
 
-            while (!operatorsStack.empty()){
+            while (!operatorsStack.empty()) {
                 popOperator()
             }
             return numbersStack.pop()
         }
 
         private fun operator(operator: Char) {
+
+            if (operator == ')') {
+                while (operatorsStack.peek() != '(') {
+                    popOperator()
+                }
+                operatorsStack.pop()
+                return
+            }
+
             if (canPop(operator)) {
                 popOperator()
             }
@@ -51,27 +60,33 @@ class Calculator {
         }
 
         private fun popOperator() {
-            val B = numbersStack.pop()
-            val A = numbersStack.pop()
+            val b = numbersStack.pop()
+            val a = numbersStack.pop()
 
             when (operatorsStack.pop()) {
-                '+' -> numbersStack.push(A + B)
-                '-' -> numbersStack.push(A - B)
-                '*' -> numbersStack.push(A * B)
-                '/' -> numbersStack.push(A / B)
+                '+' -> numbersStack.push(a + b)
+                '-' -> numbersStack.push(a - b)
+                '*' -> numbersStack.push(a * b)
+                '/' -> numbersStack.push(a / b)
             }
         }
 
         private fun canPop(operator: Char): Boolean {
-            return !operatorsStack.empty() && getPriority(operator) <= getPriority(operatorsStack.peek())
+            return !operatorsStack.empty()
+                    &&
+                    getPriority(operator) <= getPriority(operatorsStack.peek())
+                    &&
+                    operator != '('
         }
 
         private fun getPriority(operator: Char): Int {
             when (operator) {
+                '(' -> return -1
                 '+', '-' -> return 1
                 '*', '/' -> return 2
+                ')' -> return 3
             }
-            return -1
+            return -2
         }
 
     }
