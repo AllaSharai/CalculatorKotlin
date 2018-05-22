@@ -10,6 +10,7 @@ import java.net.URL
 import java.util.ResourceBundle
 
 class Controller : Initializable {
+    var openParenthesisCount: Int = 0
 
     var dotAllowed: Boolean = true
 
@@ -27,6 +28,11 @@ class Controller : Initializable {
         if (expressionText.text == "0") {
             expressionText.clear()
         }
+
+        if (expressionText.text.isNotEmpty() && getLastSymbol() == ')') {
+            return
+        }
+
         val button: Button = event.source as Button
         expressionText.text = expressionText.text + button.text
     }
@@ -43,6 +49,7 @@ class Controller : Initializable {
     @FXML
     fun cPressed() {
         expressionText.text = "0"
+        openParenthesisCount = 0
     }
 
     @FXML
@@ -56,22 +63,28 @@ class Controller : Initializable {
     @FXML
     fun openParenthesisPressed() {
 
-        if (!operators.contains(getLastSymbol())) {
+        if (operators.contains(getLastSymbol()) || getLastSymbol() == '(') {    // если последний символ +, -, *, /
+            expressionText.text = expressionText.text + '('
+            openParenthesisCount++
+            System.out.println(openParenthesisCount)
+        } else {
             if (expressionText.text == "0") {
                 expressionText.clear()
                 expressionText.text = expressionText.text + '('
+                openParenthesisCount++
+                System.out.println(openParenthesisCount)
             }
-            return
         }
-
-        expressionText.text = expressionText.text + '('
     }
 
     @FXML
     fun closeParenthesisPressed() {
         val lastSymbol: Char = getLastSymbol()
-        if (Character.isDigit(lastSymbol)) {
+
+        if (Character.isDigit(lastSymbol) && openParenthesisCount > 0) {
             expressionText.text = expressionText.text + ')'
+            openParenthesisCount--
+            System.out.println(openParenthesisCount)
         }
     }
 
@@ -103,7 +116,6 @@ class Controller : Initializable {
     }
 
     private fun getLastSymbol(): Char {
-
         return expressionText.text[expressionText.text.length - 1]
     }
 

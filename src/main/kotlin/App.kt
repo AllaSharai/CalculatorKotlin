@@ -9,7 +9,7 @@ class App : Application() {
     override fun start(stage: Stage?) {
         val root: Parent? = FXMLLoader.load(App.javaClass.getResource("/Main.fxml"))
 
-        stage?.title = "Hello world!"
+        stage?.title = "Calculator"
         stage?.scene = Scene(root)
         stage?.show()
     }
