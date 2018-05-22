@@ -54,6 +54,11 @@ class Controller : Initializable {
 
     @FXML
     fun cePressed() {
+        if (expressionText.text.isNotEmpty() && getLastSymbol() == '(') {
+            openParenthesisCount--
+        } else if (expressionText.text.isNotEmpty() && getLastSymbol() == ')') {
+            openParenthesisCount++
+        }
         expressionText.text = expressionText.text.dropLast(1)
         if (expressionText.text.isEmpty()) {
             expressionText.text = "0"
@@ -81,7 +86,7 @@ class Controller : Initializable {
     fun closeParenthesisPressed() {
         val lastSymbol: Char = getLastSymbol()
 
-        if (Character.isDigit(lastSymbol) && openParenthesisCount > 0) {
+        if ((Character.isDigit(lastSymbol) || lastSymbol == ')') && openParenthesisCount > 0) {
             expressionText.text = expressionText.text + ')'
             openParenthesisCount--
             System.out.println(openParenthesisCount)

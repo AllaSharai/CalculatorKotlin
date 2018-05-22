@@ -20,7 +20,7 @@ class Calculator {
             var number = String()
             for (symbol in expression) {
 
-                number = if (symbol.isDigit() || symbol == '.') {
+                number = if (symbol.isDigit() || symbol == '.' || symbol == 'E') {
                     number.plus(symbol)
                 } else {
                     if (!number.isEmpty()) {
